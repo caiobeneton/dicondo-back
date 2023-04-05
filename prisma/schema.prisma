@@ -79,9 +79,8 @@ model Aviso {
 }
 
 model Sessao {
-  id            Int          @id @default(autoincrement())
-  token         String       @unique
-  data_validade DateTime
-  usuario       Proprietario @relation(fields: [id_usuario], references: [id])
-  id_usuario    Int
+  id         Int          @id @default(autoincrement())
+  token      String       @unique
+  usuario    Proprietario @relation(fields: [id_usuario], references: [id])
+  id_usuario Int
 }
