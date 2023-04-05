@@ -9,3 +9,59 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model Condominio {
+  id              Int         @id @default(autoincrement())
+  nome            String
+  endereco        String
+  numero_unidades Int
+  unidades        Unidade[]
+  AreaComum       AreaComum[]
+}
+
+model Unidade {
+  id              Int          @id @default(autoincrement())
+  numero          Int
+  tamanho         Float
+  condominio      Condominio   @relation(fields: [id_condominio], references: [id])
+  id_condominio   Int
+  proprietario    Proprietario @relation(fields: [id_proprietario], references: [id])
+  id_proprietario Int
+}
+
+model Proprietario {
+  id       Int       @id @default(autoincrement())
+  nome     String
+  endereco String
+  telefone String
+  email    String
+  unidades Unidade[]
+  reservas Reserva[]
+}
+
+model Funcionario {
+  id       Int    @id @default(autoincrement())
+  nome     String
+  funcao   String
+  telefone String
+  email    String
+}
+
+model AreaComum {
+  id            Int        @id @default(autoincrement())
+  nome          String
+  descricao     String?
+  condominio    Condominio @relation(fields: [id_condominio], references: [id])
+  id_condominio Int
+  reservas      Reserva[]
+}
+
+model Reserva {
+  id               Int          @id @default(autoincrement())
+  area_comum       AreaComum    @relation(fields: [id_area_comum], references: [id])
+  id_area_comum    Int
+  proprietario     Proprietario @relation(fields: [id_proprietario], references: [id])
+  id_proprietario  Int
+  data_hora_inicio DateTime
+  data_hora_fim    DateTime
+}
