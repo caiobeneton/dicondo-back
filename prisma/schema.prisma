@@ -17,6 +17,7 @@ model Condominio {
   numero_unidades Int
   unidades        Unidade[]
   AreaComum       AreaComum[]
+  Aviso           Aviso[]
 }
 
 model Unidade {
@@ -37,6 +38,7 @@ model Proprietario {
   email    String
   unidades Unidade[]
   reservas Reserva[]
+  Sessao   Sessao[]
 }
 
 model Funcionario {
@@ -64,4 +66,22 @@ model Reserva {
   id_proprietario  Int
   data_hora_inicio DateTime
   data_hora_fim    DateTime
+}
+
+model Aviso {
+  id             Int        @id @default(autoincrement())
+  assunto        String
+  mensagem       String
+  data_criacao   DateTime   @default(now())
+  data_expiracao DateTime?
+  condominio     Condominio @relation(fields: [id_condominio], references: [id])
+  id_condominio  Int
+}
+
+model Sessao {
+  id            Int          @id @default(autoincrement())
+  token         String       @unique
+  data_validade DateTime
+  usuario       Proprietario @relation(fields: [id_usuario], references: [id])
+  id_usuario    Int
 }
